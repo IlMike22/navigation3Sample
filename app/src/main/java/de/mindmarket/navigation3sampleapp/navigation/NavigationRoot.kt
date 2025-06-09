@@ -2,11 +2,14 @@ package de.mindmarket.navigation3sampleapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
+import androidx.navigation3.ui.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import de.mindmarket.navigation3sampleapp.note.NoteDetailScreenUi
@@ -36,11 +39,13 @@ fun NavigationRoot(
             rememberViewModelStoreNavEntryDecorator(),
             rememberSceneSetupNavEntryDecorator()
         ),
+        sceneStrategy = TwoPaneSceneStrategy(),
         entryProvider = { key ->
             when (key) {
                 is NoteListScreen -> {
                     NavEntry(
                         key = key,
+                        metadata = TwoPaneScene.twoPane()
                     ) {
                         NoteListScreenUi(
                             onNoteClick = { noteId ->
@@ -58,6 +63,7 @@ fun NavigationRoot(
                 is NoteDetailScreen -> {
                     NavEntry(
                         key = key,
+                        metadata = TwoPaneScene.twoPane()
                     ) {
                         NoteDetailScreenUi(
                             viewModel = koinViewModel {
